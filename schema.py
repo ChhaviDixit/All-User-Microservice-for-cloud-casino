@@ -1,14 +1,17 @@
 import graphene
-from resolvers import resolve_players
-from enum import Enum
+from resolvers import resolve_player_count, resolve_username_with_highest_game_id
 
-class Players(graphene.ObjectType):
-    username= graphene.String()
-
+# Define the Query class where you define fields
 class Query(graphene.ObjectType):
-    players = graphene.List(Players)
+    player_count = graphene.Int()
+    username_with_highest_game_id = graphene.String()
 
-    def resolve_players(self, info):
-        return resolve_players()
+    # Link resolvers to fields in the schema
+    def resolve_player_count(self, info):
+        return resolve_player_count(self, info)
 
+    def resolve_username_with_highest_game_id(self, info):
+        return resolve_username_with_highest_game_id(self, info)
+
+# Create the GraphQL schema
 schema = graphene.Schema(query=Query)
